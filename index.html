@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV | 洞察豆价 交易未来 - 咖啡生豆期货行情</title>
+    <!-- 引入美化样式 -->
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <nav class="nav">
+        <div class="logo">BV | 洞察豆价 交易未来</div>
+        <div id="user-status">
+            <button onclick="toggleModal('register-modal')" class="btn-reg">交易员认证</button>
+        </div>
+    </nav>
+
+    <header class="header">
+        <h1>咖啡生豆期货行情</h1>
+        <p><span id="time-stamp">行情载入中...</span></p>
+        <div class="settle-notice">📢 每日 20:00 准时结算当日预判积分</div>
+    </header>
+
+    <div class="price-grid">
+        <div class="card">
+            <div class="card-head"><h3>ICE Arabica (纽约)</h3><span class="symbol">阿拉比卡</span></div>
+            <div class="price" id="ice-arabica">--.--</div>
+            <div id="arabica-trend" class="trend-box">--</div>
+            <div class="week-stats">7日累计: <span id="arabica-7d">--%</span></div>
+        </div>
+        <div class="card">
+            <div class="card-head"><h3>ICE Robusta (伦敦)</h3><span class="symbol">罗布斯塔</span></div>
+            <div class="price" id="ice-robusta">--.--</div>
+            <div id="robusta-trend" class="trend-box">--</div>
+            <div class="week-stats">7日累计: <span id="robusta-7d">--%</span></div>
+        </div>
+    </div>
+
+    <section class="predict-section">
+        <div class="predict-header">
+            <h3>下一交易日价格预判</h3>
+            <div class="points-badge">⭐ 我的预判积分: <b id="user-points">0</b></div>
+        </div>
+        
+        <form id="predict-form" class="predict-form">
+            <div class="predict-row">
+                <span class="row-label">Arabica (USd/Lbs)</span>
+                <input type="number" id="pre-h-a" step="0.01" placeholder="最高" required>
+                <input type="number" id="pre-l-a" step="0.01" placeholder="最低" required>
+                <input type="number" id="pre-c-a" step="0.01" placeholder="收盘" required>
+            </div>
+            <div class="predict-row">
+                <span class="row-label">Robusta (USD/MT)</span>
+                <input type="number" id="pre-h-r" step="1" placeholder="最高" required>
+                <input type="number" id="pre-l-r" step="1" placeholder="最低" required>
+                <input type="number" id="pre-c-r" step="1" placeholder="收盘" required>
+            </div>
+            <button type="submit" class="btn-submit">提交今日预判数据</button>
+        </form>
+
+        <button onclick="shareAchievement()" class="btn-share-king">分享我的成绩</button>
+
+        <div class="history-box">
+            <h4>预判结算记录</h4>
+            <ul id="predict-list"></ul>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p class="slogan">“智能认证，价格预测”</p>
+        <p class="contact">联系人：运营中心 iencen@yahoo.com</p>
+    </footer>
+
+    <!-- 交易员身份认证弹窗 -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">交易员身份认证</h3>
+            <p class="modal-desc">认证后即可开启价格预判结算</p>
+            <form id="reg-form">
+                <input type="text" id="username" placeholder="请输入邀请码" required class="input-code">
+                <button type="submit" class="btn-submit modal-btn">确认认证</button>
+                <button type="button" onclick="closeModal('register-modal')" class="btn-cancel modal-btn">取消认证</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 引入脚本 -->
+<script src="script.js"></script>
+</body>
+</html>
