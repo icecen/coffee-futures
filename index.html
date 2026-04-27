@@ -127,6 +127,59 @@
 
         </div>
 
+        <!-- Forward Contracts Quotes -->
+        <div class="glass-card rounded-xl border border-brand-border flex flex-col overflow-hidden shadow-2xl relative">
+            <div class="absolute inset-0 bg-gradient-to-br from-brand-card to-brand-dark z-0"></div>
+            <div class="relative z-10 px-6 py-4 border-b border-brand-border flex justify-between items-center bg-brand-card/50">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i data-lucide="list" class="text-brand-gold w-5 h-5"></i>
+                    远期合约报价矩阵
+                </h2>
+                <p class="text-xs text-gray-500">2026 - 2027 交割月</p>
+            </div>
+            <div class="relative z-10 p-0">
+                <!-- TradingView Widget BEGIN -->
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js" async>
+                    {
+                    "width": "100%",
+                    "height": 450,
+                    "symbolsGroups": [
+                        {
+                        "name": "纽约 阿拉比卡 (US Arabica)",
+                        "originalName": "Arabica",
+                        "symbols": [
+                            { "name": "ICEUS:KCK2026", "displayName": "2026年 5月 (KCK2026)" },
+                            { "name": "ICEUS:KCN2026", "displayName": "2026年 7月 (KCN2026)" },
+                            { "name": "ICEUS:KCU2026", "displayName": "2026年 9月 (KCU2026)" },
+                            { "name": "ICEUS:KCZ2026", "displayName": "2026年 12月 (KCZ2026)" },
+                            { "name": "ICEUS:KCH2027", "displayName": "2027年 3月 (KCH2027)" }
+                        ]
+                        },
+                        {
+                        "name": "伦敦 罗布斯塔 (UK Robusta)",
+                        "originalName": "Robusta",
+                        "symbols": [
+                            { "name": "ICEEUR:RCK2026", "displayName": "2026年 5月 (RCK2026)" },
+                            { "name": "ICEEUR:RCN2026", "displayName": "2026年 7月 (RCN2026)" },
+                            { "name": "ICEEUR:RCU2026", "displayName": "2026年 9月 (RCU2026)" },
+                            { "name": "ICEEUR:RCX2026", "displayName": "2026年 11月 (RCX2026)" },
+                            { "name": "ICEEUR:RCF2027", "displayName": "2027年 1月 (RCF2027)" }
+                        ]
+                        }
+                    ],
+                    "showSymbolLogo": false,
+                    "isTransparent": true,
+                    "colorTheme": "dark",
+                    "locale": "zh_CN"
+                    }
+                    </script>
+                </div>
+                <!-- TradingView Widget END -->
+            </div>
+        </div>
+
         <!-- Lower Section: Prediction & Info -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
