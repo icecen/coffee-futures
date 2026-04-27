@@ -4,91 +4,238 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BV | 洞察豆价 交易未来 - 咖啡生豆期货行情</title>
-    <!-- 引入美化样式 -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            gold: '#D4AF37',
+                            dark: '#0B0E14',
+                            card: '#161A22',
+                            border: '#2A2E39',
+                            accent: '#4ade80'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                        serif: ['Cinzel', 'Noto Serif SC', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="style.css">
-    <!-- 引入字体 -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- TradingView Script -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
-<body>
-<div class="container">
-    <nav class="nav">
-        <div class="logo">BV | 洞察豆价 交易未来</div>
-        <div id="user-status">
-            <button onclick="toggleModal('register-modal')" class="btn-reg">交易员认证</button>
+<body class="bg-brand-dark text-gray-300 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-gold selection:text-white">
+    
+    <!-- Ticker Tape (Top) -->
+    <div class="border-b border-brand-border bg-black">
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {
+            "symbols": [
+                { "proName": "ICEUS:KC1!", "title": "纽约 阿拉比卡 (Arabica)" },
+                { "proName": "ICEEUR:RC1!", "title": "伦敦 罗布斯塔 (Robusta)" },
+                { "proName": "NYMEX:CL1!", "title": "WTI 原油" },
+                { "proName": "FX_IDC:USDCNY", "title": "美元/人民币" }
+            ],
+            "showSymbolLogo": false,
+            "isTransparent": true,
+            "displayMode": "adaptive",
+            "colorTheme": "dark",
+            "locale": "zh_CN"
+            }
+            </script>
         </div>
-    </nav>
-
-    <header class="header">
-        <h1>咖啡生豆期货行情</h1>
-        <p><span id="time-stamp">行情载入中...</span></p>
-        <div class="settle-notice">📢 每日 20:00 准时结算当日预判积分</div>
-    </header>
-
-    <div class="price-grid">
-        <div class="card">
-            <div class="card-head"><h3>ICE Arabica (纽约)</h3><span class="symbol">阿拉比卡</span></div>
-            <div class="price" id="ice-arabica">--.--</div>
-            <div id="arabica-trend" class="trend-box">--</div>
-            <div class="week-stats">7日累计: <span id="arabica-7d">--%</span></div>
-        </div>
-        <div class="card">
-            <div class="card-head"><h3>ICE Robusta (伦敦)</h3><span class="symbol">罗布斯塔</span></div>
-            <div class="price" id="ice-robusta">--.--</div>
-            <div id="robusta-trend" class="trend-box">--</div>
-            <div class="week-stats">7日累计: <span id="robusta-7d">--%</span></div>
-        </div>
+        <!-- TradingView Widget END -->
     </div>
 
-    <section class="predict-section">
-        <div class="predict-header">
-            <h3>下一交易日价格预判</h3>
-            <div class="points-badge">⭐ 我的预判积分: <b id="user-points">0</b></div>
+    <!-- Header -->
+    <header class="border-b border-brand-border bg-brand-dark/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                        <i data-lucide="bar-chart-2" class="text-brand-dark w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-serif font-bold text-2xl text-white tracking-wider">BEAN AUCTION</h1>
+                        <p class="text-[10px] text-brand-gold uppercase tracking-[0.2em] font-medium">洞察豆价 · 交易未来</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-6">
+                    <div class="flex items-center gap-2 text-sm text-gray-400">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        市场连接正常
+                    </div>
+                    <button onclick="document.getElementById('authModal').classList.remove('hidden')" class="px-5 py-2.5 rounded text-sm font-medium border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-brand-dark transition-all duration-300 shadow-[0_0_10px_rgba(212,175,55,0.2)] hover:shadow-[0_0_20px_rgba(212,175,55,0.5)]">
+                        交易员认证
+                    </button>
+                </div>
+            </div>
         </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto w-full space-y-6">
         
-        <form id="predict-form" class="predict-form">
-            <div class="predict-row">
-                <span class="row-label">Arabica (USd/Lbs)</span>
-                <input type="number" id="pre-h-a" step="0.01" placeholder="最高" required>
-                <input type="number" id="pre-l-a" step="0.01" placeholder="最低" required>
-                <input type="number" id="pre-c-a" step="0.01" placeholder="收盘" required>
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Arabica Chart -->
+            <div class="glass-card rounded-xl border border-brand-border flex flex-col overflow-hidden h-[500px] lg:h-[600px] shadow-2xl relative group">
+                <div class="absolute inset-0 bg-gradient-to-br from-brand-card to-brand-dark z-0"></div>
+                <div class="relative z-10 px-6 py-4 border-b border-brand-border flex justify-between items-center bg-brand-card/50">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <span class="w-1.5 h-6 bg-brand-gold rounded-full block"></span>
+                            纽约 阿拉比卡 (Arabica)
+                        </h2>
+                        <p class="text-xs text-gray-500 mt-1">ICEUS:KC1! · 美分/磅</p>
+                    </div>
+                    <div class="px-3 py-1 bg-brand-dark rounded text-xs text-gray-400 border border-brand-border">主力连续合约</div>
+                </div>
+                <div class="flex-grow relative z-10" id="tradingview_kc1"></div>
             </div>
-            <div class="predict-row">
-                <span class="row-label">Robusta (USD/MT)</span>
-                <input type="number" id="pre-h-r" step="1" placeholder="最高" required>
-                <input type="number" id="pre-l-r" step="1" placeholder="最低" required>
-                <input type="number" id="pre-c-r" step="1" placeholder="收盘" required>
+
+            <!-- Robusta Chart -->
+            <div class="glass-card rounded-xl border border-brand-border flex flex-col overflow-hidden h-[500px] lg:h-[600px] shadow-2xl relative group">
+                <div class="absolute inset-0 bg-gradient-to-br from-brand-card to-brand-dark z-0"></div>
+                <div class="relative z-10 px-6 py-4 border-b border-brand-border flex justify-between items-center bg-brand-card/50">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <span class="w-1.5 h-6 bg-blue-500 rounded-full block"></span>
+                            伦敦 罗布斯塔 (Robusta)
+                        </h2>
+                        <p class="text-xs text-gray-500 mt-1">ICEEUR:RC1! · 美元/吨</p>
+                    </div>
+                    <div class="px-3 py-1 bg-brand-dark rounded text-xs text-gray-400 border border-brand-border">主力连续合约</div>
+                </div>
+                <div class="flex-grow relative z-10" id="tradingview_rc1"></div>
             </div>
-            <button type="submit" class="btn-submit">提交今日预判数据</button>
-        </form>
 
-        <button onclick="shareAchievement()" class="btn-share-king">分享我的成绩</button>
-
-        <div class="history-box">
-            <h4>预判结算记录</h4>
-            <ul id="predict-list"></ul>
         </div>
-    </section>
 
-    <footer class="footer">
-        <p class="slogan">“智能认证，价格预测”</p>
-        <p class="contact">联系人：运营中心 iencen@yahoo.com</p>
+        <!-- Lower Section: Prediction & Info -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Prediction Form -->
+            <div class="lg:col-span-2 glass-card rounded-xl border border-brand-border p-6 relative overflow-hidden">
+                <!-- Glowing orb effect -->
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-brand-gold/10 rounded-full blur-[80px] pointer-events-none"></div>
+                
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <i data-lucide="target" class="text-brand-gold w-5 h-5"></i>
+                    下一交易日价格预判
+                </h3>
+                
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-5" onsubmit="event.preventDefault(); alert('预判已提交！等待系统结算。')">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1.5">预判品种</label>
+                        <select class="w-full bg-brand-dark border border-brand-border rounded px-4 py-2.5 text-white focus:outline-none focus:border-brand-gold transition-colors appearance-none cursor-pointer">
+                            <option>纽约阿拉比卡 (KC1!)</option>
+                            <option>伦敦罗布斯塔 (RC1!)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1.5">方向</label>
+                        <select class="w-full bg-brand-dark border border-brand-border rounded px-4 py-2.5 text-white focus:outline-none focus:border-brand-gold transition-colors appearance-none cursor-pointer">
+                            <option>看涨 (Long)</option>
+                            <option>看跌 (Short)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1.5">目标价</label>
+                        <input type="number" step="0.01" class="w-full bg-brand-dark border border-brand-border rounded px-4 py-2.5 text-white focus:outline-none focus:border-brand-gold transition-colors" placeholder="输入预判价格">
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="w-full bg-gradient-to-r from-brand-gold to-yellow-600 text-brand-dark font-bold py-2.5 rounded hover:opacity-90 transition-opacity shadow-[0_4px_14px_rgba(212,175,55,0.3)]">
+                            提交预判
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Settlement Records & Contact -->
+            <div class="glass-card rounded-xl border border-brand-border p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="history" class="text-gray-400 w-5 h-5"></i>
+                        预判结算记录
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center bg-brand-dark p-3 rounded border border-brand-border/50">
+                            <div>
+                                <span class="text-xs text-gray-500 block">今日结算</span>
+                                <span class="text-sm text-gray-300">智能认证，价格预测</span>
+                            </div>
+                            <span class="text-brand-accent text-sm font-bold flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-1"></i> 已更新</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-6 border-t border-brand-border">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-2">联系运营中心</p>
+                    <a href="mailto:iencen@yahoo.com" class="flex items-center gap-2 text-brand-gold hover:text-white transition-colors group">
+                        <i data-lucide="mail" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        iencen@yahoo.com
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-brand-border py-8 mt-auto bg-brand-dark text-center text-sm text-gray-500">
+        <p>&copy; 2026 BEAN AUCTION. 洞察豆价 交易未来.</p>
+        <p class="mt-1 text-xs opacity-60">数据由 TradingView 提供，具有约 10-15 分钟延迟。仅供参考，不构成投资建议。</p>
     </footer>
 
-    <!-- 交易员身份认证弹窗 -->
-    <div id="register-modal" class="modal">
-        <div class="modal-content">
-            <h3 class="modal-title">交易员身份认证</h3>
-            <p class="modal-desc">认证后即可开启价格预判结算</p>
-            <form id="reg-form">
-                <input type="text" id="username" placeholder="请输入邀请码" required class="input-code">
-                <button type="submit" class="btn-submit modal-btn">确认认证</button>
-                <button type="button" onclick="closeModal('register-modal')" class="btn-cancel modal-btn">取消认证</button>
+    <!-- Auth Modal -->
+    <div id="authModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-brand-card border border-brand-border rounded-xl w-full max-w-md p-8 relative shadow-[0_0_50px_rgba(0,0,0,0.5)] fade-in">
+            <button onclick="document.getElementById('authModal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 rounded-full bg-brand-dark border border-brand-gold/30 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="shield-check" class="w-8 h-8 text-brand-gold"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white">交易员身份认证</h2>
+                <p class="text-sm text-gray-400 mt-2">认证后即可开启价格预判及结算功能</p>
+            </div>
+            
+            <form class="space-y-4" onsubmit="event.preventDefault(); alert('认证申请已发送。'); document.getElementById('authModal').classList.add('hidden')">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">交易员编号 / 邮箱</label>
+                    <input type="text" class="w-full bg-brand-dark border border-brand-border rounded px-4 py-3 text-white focus:outline-none focus:border-brand-gold" placeholder="输入编号">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">安全密钥</label>
+                    <input type="password" class="w-full bg-brand-dark border border-brand-border rounded px-4 py-3 text-white focus:outline-none focus:border-brand-gold" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded hover:bg-yellow-500 transition-colors mt-4">
+                    验证身份
+                </button>
             </form>
         </div>
     </div>
-</div>
 
-<!-- 引入脚本 -->
-<script src="script.js"></script>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
