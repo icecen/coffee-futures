@@ -80,7 +80,7 @@
                         市场连接正常
                     </div>
                     <button onclick="document.getElementById('authModal').classList.remove('hidden')" class="px-5 py-2.5 rounded text-sm font-medium border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-brand-dark transition-all duration-300 shadow-[0_0_10px_rgba(212,175,55,0.2)] hover:shadow-[0_0_20px_rgba(212,175,55,0.5)]">
-                        交易员认证
+                        会员登陆
                     </button>
                 </div>
             </div>
@@ -190,10 +190,10 @@
                 
                 <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
                     <i data-lucide="target" class="text-brand-gold w-5 h-5"></i>
-                    下一交易日价格预判
+                    下一交易日价格预测
                 </h3>
                 
-                <form class="grid grid-cols-1 md:grid-cols-2 gap-5" onsubmit="event.preventDefault(); alert('预判已提交！等待系统结算。')">
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-5" onsubmit="submitPrediction(event)">
                     <div>
                         <label class="block text-sm text-gray-400 mb-1.5">预判品种</label>
                         <select class="w-full bg-brand-dark border border-brand-border rounded px-4 py-2.5 text-white focus:outline-none focus:border-brand-gold transition-colors appearance-none cursor-pointer">
@@ -214,7 +214,7 @@
                     </div>
                     <div class="flex items-end">
                         <button type="submit" class="w-full bg-gradient-to-r from-brand-gold to-yellow-600 text-brand-dark font-bold py-2.5 rounded hover:opacity-90 transition-opacity shadow-[0_4px_14px_rgba(212,175,55,0.3)]">
-                            提交预判
+                            提交我的价格预测
                         </button>
                     </div>
                 </form>
@@ -266,26 +266,60 @@
                 <div class="w-16 h-16 rounded-full bg-brand-dark border border-brand-gold/30 flex items-center justify-center mx-auto mb-4">
                     <i data-lucide="shield-check" class="w-8 h-8 text-brand-gold"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-white">交易员身份认证</h2>
-                <p class="text-sm text-gray-400 mt-2">认证后即可开启价格预判及结算功能</p>
+                <h2 class="text-2xl font-bold text-white">会员登陆 / 注册</h2>
+                <p class="text-sm text-gray-400 mt-2">登陆后即可提交价格预测，未注册手机号将自动注册</p>
             </div>
             
-            <form class="space-y-4" onsubmit="event.preventDefault(); alert('认证申请已发送。'); document.getElementById('authModal').classList.add('hidden')">
+            <form class="space-y-4" onsubmit="handleLogin(event)">
                 <div>
-                    <label class="block text-sm text-gray-400 mb-1">交易员编号 / 邮箱</label>
-                    <input type="text" class="w-full bg-brand-dark border border-brand-border rounded px-4 py-3 text-white focus:outline-none focus:border-brand-gold" placeholder="输入编号">
+                    <label class="block text-sm text-gray-400 mb-1">手机号码</label>
+                    <input type="tel" id="mobileInput" required class="w-full bg-brand-dark border border-brand-border rounded px-4 py-3 text-white focus:outline-none focus:border-brand-gold" placeholder="输入手机号码">
                 </div>
                 <div>
-                    <label class="block text-sm text-gray-400 mb-1">安全密钥</label>
-                    <input type="password" class="w-full bg-brand-dark border border-brand-border rounded px-4 py-3 text-white focus:outline-none focus:border-brand-gold" placeholder="••••••••">
+                    <label class="block text-sm text-gray-400 mb-1">登录密码</label>
+                    <input type="password" required class="w-full bg-brand-dark border border-brand-border rounded px-4 py-3 text-white focus:outline-none focus:border-brand-gold" placeholder="••••••••">
                 </div>
                 <button type="submit" class="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded hover:bg-yellow-500 transition-colors mt-4">
-                    验证身份
+                    验证并登陆
                 </button>
             </form>
         </div>
     </div>
 
+    <script>
+        let isLoggedIn = false;
+        let currentUser = "";
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const phone = document.getElementById('mobileInput').value;
+            if(!phone) return;
+            
+            isLoggedIn = true;
+            currentUser = phone;
+            
+            document.getElementById('authModal').classList.add('hidden');
+            
+            const headerBtn = document.querySelector('header button');
+            if(headerBtn) {
+                headerBtn.innerHTML = '<i data-lucide="user" class="inline w-4 h-4 mr-1"></i> ' + phone.substring(0,3) + '****' + phone.substring(phone.length - 4);
+                headerBtn.onclick = null;
+                lucide.createIcons();
+            }
+            
+            alert('登录成功！欢迎回来。');
+        }
+
+        function submitPrediction(e) {
+            e.preventDefault();
+            if(!isLoggedIn) {
+                alert('您尚未登录！未注册的会员在提交预测时需通过手机号码注册并登录。');
+                document.getElementById('authModal').classList.remove('hidden');
+                return;
+            }
+            alert('价格预测提交成功！等待系统结算。');
+        }
+    </script>
     <script src="script.js"></script>
     <script>
         lucide.createIcons();
