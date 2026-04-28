@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // London Robusta Chart
     new TradingView.widget({
         "autosize": true,
-        "symbol": "ICEEUR:RC1!",
+        "symbol": "BLACKBULL:ROBUSTA",
         "interval": "D",
         "timezone": "Asia/Shanghai",
         "theme": "dark",
